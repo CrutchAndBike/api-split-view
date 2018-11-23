@@ -1,0 +1,30 @@
+{
+  "name": "api-split-view",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "forever": "^0.15.3",
+    "mongoose": "^5.3.13"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./",
+    "pro": "forever -a -l forever.log --minUptime 1000 --spinSleepTime 3000 start ./index.js",
+    "prostop": "forever stop ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrutchAndBike/api-split-view.git"
+  },
+  "author": "Crutch&Bike",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrutchAndBike/api-split-view/issues"
+  },
+  "homepage": "https://github.com/CrutchAndBike/api-split-view#readme"
+}
