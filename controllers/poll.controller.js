@@ -1,6 +1,8 @@
 const Poll = require('../models/Poll');
 const Input = require('../models/Input');
 
+const { validateMongoId } = require('../middleware/validator');
+
 module.exports.controller = (app) => {
     app.get('/api/poll', async (req, res) => {
         const polls = await Poll.find();
@@ -8,7 +10,7 @@ module.exports.controller = (app) => {
         res.json(polls);
     });
 
-    app.get('/api/poll/:id', async (req, res) => {
+    app.get('/api/poll/:id', validateMongoId, async (req, res) => {
         try {
             const poll = await Poll.findOne({id: req.params.id});
 
@@ -24,7 +26,7 @@ module.exports.controller = (app) => {
         }
     });
 
-    app.post('/api/poll/', async (req, res) => {
+    app.post('/api/poll/', validateMongoId, async (req, res) => {
         const data = req.body;
 
         // [ {type: 'select', text: 'asdasdasd', options: ['asda']}, {type}]
@@ -79,10 +81,8 @@ module.exports.controller = (app) => {
         }
     });
 
-    app.post('/api/poll/:id/status', async (req, res) => {
+    app.post('/api/poll/:id/status', validateMongoId, async (req, res) => {
         const { status } = req.body;
-        
-        // TODO: Validate request ID
 
         const poll = await Poll.findById(req.params.id);
 
@@ -102,8 +102,7 @@ module.exports.controller = (app) => {
         }
     });
 
-    app.delete('/api/poll/:id/', async (req, res) => {
-        // TODO: Validate request ID
+    app.delete('/api/poll/:id/', validateMongoId, async (req, res) => {
         const poll = await Poll.findById(req.params.id);
 
         if (!poll) {
