@@ -1,18 +1,27 @@
 const createError = require('http-errors');
 const express = require('express');
 const app = express();
+const fs = require('fs');
+const path = require('path');
 
-const router = require('./router');
 const bodyParser = require('body-parser');
-
-const {port} = require('./conf/server');
 
 require('./lib/connect'); // Connect to DB
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-router(app);
+// Include controllers
+fs.readdirSync('controllers').forEach((file) => {
+    if (file.substr(-3) === '.js') {
+        let route = require('./controllers/' + file);
+        route.controller(app);
+    }
+});
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

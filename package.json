@@ -4,20 +4,21 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "latest",
     "express": "^4.16.4",
     "forever": "^0.15.3",
-    "mongoose": "^5.3.13",
     "http-errors": "latest",
-    "body-parser": "latest"
+    "mongoose": "^5.3.13",
+    "pug": "^2.0.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./",
-    "pro": "forever -a -l forever.log --minUptime 1000 --spinSleepTime 3000 start ./index.js",
-    "prostop": "forever stop ./index.js"
+    "dev": "nodemon ./bin/www",
+    "pro": "forever -a -l forever.log --minUptime 1000 --spinSleepTime 3000 start ./bin/www",
+    "prostop": "forever stop ./bin/www"
   },
   "repository": {
     "type": "git",
