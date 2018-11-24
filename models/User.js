@@ -1,4 +1,4 @@
-const mongoose = require('mongoose'),
+const mongoose = require('../lib/connect'),
     Schema = mongoose.Schema;
 
 
