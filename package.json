@@ -2,11 +2,13 @@
   "name": "api-split-view",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "express": "^4.16.4",
     "forever": "^0.15.3",
-    "mongoose": "^5.3.13"
+    "mongoose": "^5.3.13",
+    "http-errors": "latest",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
