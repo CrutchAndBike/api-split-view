@@ -9,7 +9,8 @@
     "express": "^4.16.4",
     "forever": "^0.15.3",
     "http-errors": "latest",
-    "mongoose": "^5.3.13"
+    "mongoose": "^5.3.13",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const { validateMongoId } = require('../middleware/validator');
 
 module.exports.controller = (app) => {
 
@@ -25,12 +26,13 @@ module.exports.controller = (app) => {
     });
 
     // get single user by id
-    app.get('/api/users/:id', async (req, res) => {
+    app.get('/api/users/:id', validateMongoId, async (req, res) => {
+
         try {
             let user = await User.findById(req.params.id, 'name age gender');
             res.json(user);
         } catch (error) {
-            res.status(400).json(error);
+            res.status(500).json(error);
         }
     });
 
@@ -53,7 +55,7 @@ module.exports.controller = (app) => {
     });
 
     // update existing user
-    app.put('/api/users/:id', async (req, res) => {
+    app.put('/api/users/:id', validateMongoId, async (req, res) => {
         try {
             let response = await User.findByIdAndUpdate(req.params.id, {
                 $set: {
@@ -71,7 +73,7 @@ module.exports.controller = (app) => {
     });
 
     // delete existing user
-    app.delete('/api/users/:id', async (req, res) => {
+    app.delete('/api/users/:id', validateMongoId, async (req, res) => {
         try {
             let response = await User.findByIdAndRemove(req.params.id);
             res.json(response._id);
