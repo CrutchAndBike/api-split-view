@@ -1,4 +1,4 @@
-const mongoose = require('../controllers/connect'),
+const mongoose = require('../lib/connect'),
     Schema = mongoose.Schema;
 
 const schema = new Schema({
