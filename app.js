@@ -19,6 +19,25 @@ require('./lib/connect'); // Connect to DB
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+// session
+app.use(session({
+    name: 'api-split-view',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
+    },
+    unset: 'destroy',
+    secret: 'some-secret-key',
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection,
+        autoRemove: 'native',
+        ttl: 14 * 24 * 60 * 60,
+        touchAfter: 10 * 60,
+        stringify: true
+    })
+}));
+
 // Include controllers
 fs.readdirSync('controllers').forEach((file) => {
     if (file.substr(-3) === '.js') {
@@ -38,25 +57,6 @@ fs.readdirSync('controllers').forEach((file) => {
 //         console.log('Refresh token:', refreshToken);
 //     }
 // ));
-
-// session
-app.use(session({
-    // name: 'api-store',
-    resave: true,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
-    },
-    unset: 'destroy',
-    secret: 'some-secret-key',
-    // store: new MongoStore({
-    //     mongooseConnection: mongoose.connection,
-    //     autoRemove: 'native',
-    //     ttl: 14 * 24 * 60 * 60,
-    //     touchAfter: 10 * 60,
-    //     stringify: true
-    // })
-}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

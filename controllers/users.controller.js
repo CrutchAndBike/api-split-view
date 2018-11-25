@@ -5,10 +5,17 @@ const axios = require('axios');
 module.exports.controller = (app) => {
     // check session
     const auth = async (req, res, next) => {
-        if(req.session && await User.findById(req.session.id)) {
-            return next;
+        if(req.session.user_id) {
+            try {
+                let user = await User.findById(req.session.user_id);
+                if(user) {
+                    next();
+                }
+            } catch (err) {
+                console.log(err);
+            }
         } 
-        return res.sendStatus(401);
+        res.sendStatus(401);
     };
 
     // get all users
@@ -112,7 +119,6 @@ module.exports.controller = (app) => {
             const userData = data.data;
             
             let user = await User.findOne({ yandex_id: userData.id });
-            console.log(req.session);
 
             if(!user) {
                 user = new User({
@@ -124,10 +130,10 @@ module.exports.controller = (app) => {
                 });
                 let response = await user.save(user);
 
-                req.session.id = response._id;
+                req.session.user_id = response._id;
                 res.json(response);
             } else {
-                req.session.id = user._id;
+                req.session.user_id = user._id;
                 res.json(user);
             }
         } catch (error) {
@@ -135,5 +141,4 @@ module.exports.controller = (app) => {
             res.status(400).json(error);
         }
     });
-
 };
