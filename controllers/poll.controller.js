@@ -1,4 +1,6 @@
 const Poll = require('../models/Poll');
+const inputTypes = ['select', 'text'];
+const statusTypes = ['wait', 'active', 'close'];
 
 class Input {
     constructor(data) {
@@ -9,6 +11,23 @@ class Input {
             this.options = data.options;
         }
     }
+}
+
+function isValidInput(input) {
+    const hasText = !!input.text;
+    const hasType = !!input.type;
+
+    if (!hasText || !hasType) return false;
+
+    const typeOk = inputTypes.includes(input.type);
+
+    if (!typeOk) return false;
+
+    const hasOptions = input.options && input.options != 0;
+
+    if (input.type == 'select' && !hasOptions) return false;
+    
+    return true;
 }
 
 module.exports = {
@@ -39,38 +58,20 @@ module.exports = {
         const data = req.body;
 
         const inputs = [];
-        
+
         for (let i = 0; i < data.forms.length; i++) {
-            const el = data.forms[i];
-            
-            if (!el.text) {
-                res.status(400).send({ errMsg: 'Text is required!'});
+            const input = data.forms[i];
+
+            if (!isValidInput(input)) {
+                res.sendStatus(400);
                 return;
             }
 
-            if (!el.type) {
-                res.status(400).send({ errMsg: 'Type is required!'})
-                return;
-            }
-
-            if (!['select', 'text'].includes(el.type)) {
-                res.status(400).send({ errMsg: 'Type is wrong!'})
-                return;
-            }
-
-            if (el.type == 'select' && (!el.options || el.options.length == 0)) {
-                res.status(400).send({ errMsg: 'Options is required for type "select"!'});
-                return;
-            }
-
-            const input = new Input(el);
-
-            inputs.push(input);
+            inputs.push(new Input(input));
         }
 
         const poll = new Poll({
             name: data.name,
-            url: 'test',
             forms: inputs
         });
 
@@ -79,6 +80,7 @@ module.exports = {
             console.log('Poll created!');
             res.sendStatus(200);
         } catch (err) {
+            console.log(err);
             res.sendStatus(500);
             return;
         }
@@ -88,96 +90,71 @@ module.exports = {
         const data = req.body;
         const { id } = req.params;
 
-        const poll = await Poll.findById(id);
-
         const inputs = [];
         
         for (let i = 0; i < data.forms.length; i++) {
-            const el = data.forms[i];
-            
-            if (!el.text) {
-                res.status(400).send({ errMsg: 'Text is required!'});
+            const input = data.forms[i];
+
+            if (!isValidInput(input)) {
+                res.send(400);
                 return;
             }
 
-            if (!el.type) {
-                res.status(400).send({ errMsg: 'Type is required!'})
-                return;
-            }
-
-            if (!['select', 'text'].includes(el.type)) {
-                res.status(400).send({ errMsg: 'Type is wrong!'})
-                return;
-            }
-
-            if (el.type == 'select' && (!el.options || el.options.length == 0)) {
-                res.status(400).send({ errMsg: 'Options is required for type "select"!'});
-                return;
-            }
-
-            const input = new Input({
-                text: el.text,
-                type: el.type,
-                options: el.options
-            });
-
-            inputs.push(await input.save());
+            inputs.push(new Input(input));
         }
 
-        poll.inputs = inputs;
+        const poll = await Poll.findOneAndUpdate({_id: id}, {
+            $set: {
+                name: data.name,
+                forms: inputs
+            }
+        });
 
-        try {
-            poll.save();
-            console.log('Poll saved!');
-            res.sendStatus(200);
-        } catch (err) {
-            res.sendStatus(500);
+        if (!poll) {
+            res.sendStatus(400);      
             return;
         }
+
+        console.log('Poll edited!');
+        res.sendStatus(200);
     },
 
     changeStatus: async (req, res) => {
         const { status } = req.body;
+        const { id } = req.params;
 
-        const poll = await Poll.findById(req.params.id);
-
-        if (!['wait', 'active', 'close'].includes(status)) {
+        if (!statusTypes.includes(status)) {
             res.status(403).send({errMsg: 'Wrong status'});
             return;
         }
 
-        poll.status = status;
-        
-        try {
-            poll.save();
-            res.sendStatus(200);            
-        } catch (err) {
-            res.sendStatus(500);
+        const poll = await Poll.findOneAndUpdate({_id: id}, {
+            $set: {
+                status: status
+            }
+        });
+
+        if (!poll) {
+            res.sendStatus(400);            
             return;
         }
+
+        console.log('Poll status changed!');
+        res.sendStatus(200);
     },
 
     delete: async (req, res) => {
-        const poll = await Poll.findById(req.params.id);
+        const { id } = req.params;
+
+        const poll = await Poll.findByIdAndDelete(id);
 
         if (!poll) {
             res.sendStatus(404);
             return;
         }
 
-        for (let index = 0; index < poll.forms.length; index++) {
-            const input = poll.forms[index];
-
-            Input.findByIdAndDelete(input);
-        }
-        
-        try {
-            await Poll.findByIdAndDelete(req.params.id);            
-            res.sendStatus(200);            
-        } catch (err) {
-            res.sendStatus(500);
-            return;
-        }
+        console.log('Poll deleted!');
+        res.sendStatus(200);
     }
 
 };
