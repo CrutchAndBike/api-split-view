@@ -1,7 +1,15 @@
 const User = require('../models/User');
 const passport = require('passport');
+const axios = require('axios');
 
 module.exports.controller = (app) => {
+    // check session
+    const auth = async (req, res, next) => {
+        if(req.session && await User.findById(req.session.id)) {
+            return next;
+        } 
+        return res.sendStatus(401);
+    };
 
     // get all users
     app.get('/api/users', async (req, res) => {
@@ -91,5 +99,41 @@ module.exports.controller = (app) => {
             res.json({});
         });
 
+    // login via yandex token
+    app.get('/login/yandex', async (req, res) => {
+        const token = req.headers.authorization;
+
+        try {
+            const data = await axios.get('https://login.yandex.ru/info?format=json', {
+                headers: {
+                    'Authorization': 'OAuth ' + token
+                }
+            });
+            const userData = data.data;
+            
+            let user = await User.findOne({ yandex_id: userData.id });
+            console.log(req.session);
+
+            if(!user) {
+                user = new User({
+                    name: userData.real_name,
+                    age: '',
+                    gender: userData.sex,
+                    avatar: '',
+                    yandex_id: userData.id,
+                });
+                let response = await user.save(user);
+
+                req.session.id = response._id;
+                res.json(response);
+            } else {
+                req.session.id = user._id;
+                res.json(user);
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(400).json(error);
+        }
+    });
 
 };

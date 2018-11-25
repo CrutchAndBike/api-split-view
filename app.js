@@ -2,6 +2,10 @@ const createError = require('http-errors');
 const express = require('express');
 const app = express();
 const fs = require('fs');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session); 
+const mongoose = require('mongoose');
+
 const passport = require('passport');
 const YandexStrategy = require('passport-yandex').Strategy;
 
@@ -24,16 +28,35 @@ fs.readdirSync('controllers').forEach((file) => {
 });
 
 // passport
-passport.use(new YandexStrategy({
-        clientID: YANDEX_CLIENT_ID,
-        clientSecret: YANDEX_CLIENT_SECRET,
-        callbackURL: 'http://127.0.0.1:3001/auth/yandex/callback'
+// passport.use(new YandexStrategy({
+//         clientID: YANDEX_CLIENT_ID,
+//         clientSecret: YANDEX_CLIENT_SECRET,
+//         callbackURL: 'http://127.0.0.1:3001/auth/yandex/callback'
+//     },
+//     (accessToken, refreshToken, profile, done) => {
+//         console.log('Access token:', accessToken);
+//         console.log('Refresh token:', refreshToken);
+//     }
+// ));
+
+// session
+app.use(session({
+    // name: 'api-store',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
     },
-    (accessToken, refreshToken, profile, done) => {
-        console.log('Access token:', accessToken);
-        console.log('Refresh token:', refreshToken);
-    }
-));
+    unset: 'destroy',
+    secret: 'some-secret-key',
+    // store: new MongoStore({
+    //     mongooseConnection: mongoose.connection,
+    //     autoRemove: 'native',
+    //     ttl: 14 * 24 * 60 * 60,
+    //     touchAfter: 10 * 60,
+    //     stringify: true
+    // })
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
