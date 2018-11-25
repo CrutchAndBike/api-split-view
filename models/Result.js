@@ -5,21 +5,17 @@ const schema = new Schema({
     // Дата создания
     createdOn: {
         type: Date,
-        required: true
-    },
-    // Дата изменения
-    modifiedOn: {
-        type: Date,
-        required: true
+        required: true,
+        default: new Date()
     },
     // Автор
     author: {
-        type: String, 
-        /* TODO поменять на уник. идентификатоор
+        type: String,
+        /* TODO поменять на уник. идентификатор
         type: [
             {
                 type: Schema.Types.ObjectId,
-                ref: 'Users'
+                ref: 'User'
             }
         ],
         */
@@ -27,12 +23,15 @@ const schema = new Schema({
     },
     // Выбранный вариант
     selectedVariant: {
+        /* TODO поменять на уник. идентификатор
         type: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Variant'
             }
         ],
+        */
+        type: String,
         required: true
     },
     // Id опроса
