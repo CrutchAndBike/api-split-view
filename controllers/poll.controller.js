@@ -1,4 +1,6 @@
 const Poll = require('../models/Poll');
+const inputTypes = ['select', 'text'];
+const statusTypes = ['wait', 'active', 'close'];
 
 class Input {
     constructor(data) {
@@ -9,6 +11,23 @@ class Input {
             this.options = data.options;
         }
     }
+}
+
+function isValidInput(input) {
+    const hasText = !!input.text;
+    const hasType = !!input.type;
+
+    if (!hasText || !hasType) return false;
+
+    const typeOk = inputTypes.includes(input.type);
+
+    if (!typeOk) return false;
+
+    const hasOptions = input.options && input.options != 0;
+
+    if (input.type == 'select' && !hasOptions) return false;
+    
+    return true;
 }
 
 module.exports = {
@@ -39,33 +58,16 @@ module.exports = {
         const data = req.body;
 
         const inputs = [];
-        
+
         for (let i = 0; i < data.forms.length; i++) {
-            const el = data.forms[i];
-            
-            if (!el.text) {
-                res.status(400).send({ errMsg: 'Text is required!'});
+            const input = data.forms[i];
+
+            if (!isValidInput(input)) {
+                res.sendStatus(400);
                 return;
             }
 
-            if (!el.type) {
-                res.status(400).send({ errMsg: 'Type is required!'})
-                return;
-            }
-
-            if (!['select', 'text'].includes(el.type)) {
-                res.status(400).send({ errMsg: 'Type is wrong!'})
-                return;
-            }
-
-            if (el.type == 'select' && (!el.options || el.options.length == 0)) {
-                res.status(400).send({ errMsg: 'Options is required for type "select"!'});
-                return;
-            }
-
-            const input = new Input(el);
-
-            inputs.push(input);
+            inputs.push(new Input(input));
         }
 
         const poll = new Poll({
@@ -91,31 +93,14 @@ module.exports = {
         const inputs = [];
         
         for (let i = 0; i < data.forms.length; i++) {
-            const el = data.forms[i];
-            
-            if (!el.text) {
-                res.status(400).send({ errMsg: 'Text is required!'});
+            const input = data.forms[i];
+
+            if (!isValidInput(input)) {
+                res.send(400);
                 return;
             }
 
-            if (!el.type) {
-                res.status(400).send({ errMsg: 'Type is required!'})
-                return;
-            }
-
-            if (!['select', 'text'].includes(el.type)) {
-                res.status(400).send({ errMsg: 'Type is wrong!'})
-                return;
-            }
-
-            if (el.type == 'select' && (!el.options || el.options.length == 0)) {
-                res.status(400).send({ errMsg: 'Options is required for type "select"!'});
-                return;
-            }
-
-            const input = new Input(el);
-
-            inputs.push(input);
+            inputs.push(new Input(input));
         }
 
         const poll = await Poll.findOneAndUpdate({_id: id}, {
@@ -138,7 +123,7 @@ module.exports = {
         const { status } = req.body;
         const { id } = req.params;
 
-        if (!['wait', 'active', 'close'].includes(status)) {
+        if (!statusTypes.includes(status)) {
             res.status(403).send({errMsg: 'Wrong status'});
             return;
         }
