@@ -1,9 +1,8 @@
 const Result = require('../models/Result');
 
-module.exports.controller = (app) => {
+module.exports = {
 
-    app.get('/api/results', async (req, res) => {
-
+    getAll: async (req, res) => {
         const limitFilter = req.query.limit && parseInt(req.query.limit);
         const offsetFilter = req.query.offset && parseInt(req.query.offset);
 
@@ -18,10 +17,9 @@ module.exports.controller = (app) => {
         } catch {
             res.status(400).json(err);
         }
-    });
+    },
 
-    app.get('/api/analytic-result', async (req, res) => {
-
+    getAnal: async (req, res) => {
         const { pollId } = req.query;
 
         try {
@@ -35,10 +33,9 @@ module.exports.controller = (app) => {
         } catch (err) {
             res.status(400).json(err);
         }
-    });
+    },
 
-    app.post('/api/insert-result', async (req, res) => {
-
+    save: async (req, res) => {
         const { authorId, selectedVariantId, pollId } = req.body;
 
         try {
@@ -56,5 +53,5 @@ module.exports.controller = (app) => {
         } catch (err) {
             res.status(400).json(err);
         }
-    });
+    }
 };
