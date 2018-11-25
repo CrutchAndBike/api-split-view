@@ -82,7 +82,7 @@ module.exports = {
             res.sendStatus(500);
             return;
         }
-    });
+    },
 
     edit: async (req, res) => {
         const data = req.body;
