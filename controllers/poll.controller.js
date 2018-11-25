@@ -82,7 +82,7 @@ module.exports = {
             res.sendStatus(500);
             return;
         }
-    });
+    },
 
     edit: async (req, res) => {
         const data = req.body;
@@ -115,13 +115,9 @@ module.exports = {
                 return;
             }
 
-            const input = new Input({
-                text: el.text,
-                type: el.type,
-                options: el.options
-            });
+            const input = new Input(el);
 
-            inputs.push(await input.save());
+            inputs.push(input);
         }
 
         poll.inputs = inputs;
