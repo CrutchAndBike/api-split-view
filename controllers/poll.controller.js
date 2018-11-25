@@ -88,8 +88,6 @@ module.exports = {
         const data = req.body;
         const { id } = req.params;
 
-        const poll = await Poll.findById(id);
-
         const inputs = [];
         
         for (let i = 0; i < data.forms.length; i++) {
@@ -120,60 +118,58 @@ module.exports = {
             inputs.push(input);
         }
 
-        poll.inputs = inputs;
+        const poll = await Poll.findOneAndUpdate({_id: id}, {
+            $set: {
+                name: data.name,
+                forms: inputs
+            }
+        });
 
-        try {
-            poll.save();
-            console.log('Poll saved!');
-            res.sendStatus(200);
-        } catch (err) {
-            res.sendStatus(500);
+        if (!poll) {
+            res.sendStatus(400);      
             return;
         }
+
+        console.log('Poll edited!');
+        res.sendStatus(200);
     },
 
     changeStatus: async (req, res) => {
         const { status } = req.body;
-
-        const poll = await Poll.findById(req.params.id);
+        const { id } = req.params;
 
         if (!['wait', 'active', 'close'].includes(status)) {
             res.status(403).send({errMsg: 'Wrong status'});
             return;
         }
 
-        poll.status = status;
-        
-        try {
-            poll.save();
-            res.sendStatus(200);            
-        } catch (err) {
-            res.sendStatus(500);
+        const poll = await Poll.findOneAndUpdate({_id: id}, {
+            $set: {
+                status: status
+            }
+        });
+
+        if (!poll) {
+            res.sendStatus(400);            
             return;
         }
+
+        console.log('Poll status changed!');
+        res.sendStatus(200);
     },
 
     delete: async (req, res) => {
-        const poll = await Poll.findById(req.params.id);
+        const { id } = req.params;
+
+        const poll = await Poll.findByIdAndDelete(id);
 
         if (!poll) {
             res.sendStatus(404);
             return;
         }
 
-        for (let index = 0; index < poll.forms.length; index++) {
-            const input = poll.forms[index];
-
-            Input.findByIdAndDelete(input);
-        }
-        
-        try {
-            await Poll.findByIdAndDelete(req.params.id);            
-            res.sendStatus(200);            
-        } catch (err) {
-            res.sendStatus(500);
-            return;
-        }
+        console.log('Poll deleted!');
+        res.sendStatus(200);
     }
 
 };

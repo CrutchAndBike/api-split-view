@@ -14,9 +14,11 @@ module.exports = function (app) {
 
     app.get('/api/poll/:id', validateMongoId, Poll.getOne);
 
+    app.put('/api/poll/:id', validateMongoId, Poll.edit);
+
     app.post('/api/poll', Poll.create);
 
-    app.post('/api/poll/:id/status', validateMongoId, Poll.changeStatus);
+    app.patch('/api/poll/:id', validateMongoId, Poll.changeStatus);
 
     app.delete('/api/poll/:id', validateMongoId, Poll.delete);
 
