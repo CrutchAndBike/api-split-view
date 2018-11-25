@@ -72,7 +72,6 @@ module.exports = {
 
         const poll = new Poll({
             name: data.name,
-            url: 'test',
             forms: inputs
         });
 
@@ -81,6 +80,7 @@ module.exports = {
             console.log('Poll created!');
             res.sendStatus(200);
         } catch (err) {
+            console.log(err);
             res.sendStatus(500);
             return;
         }
