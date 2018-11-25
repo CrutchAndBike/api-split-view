@@ -1,5 +1,4 @@
 const Poll = require('../models/Poll');
-const { validateMongoId } = require('../middleware/validator');
 
 class Input {
     constructor(data) {
@@ -12,14 +11,15 @@ class Input {
     }
 }
 
-module.exports.controller = (app) => {
-    app.get('/api/poll', async (req, res) => {
+module.exports = {
+
+    getAll: async (req, res) => {
         const polls = await Poll.find();
 
         res.json(polls);
-    });
+    },
 
-    app.get('/api/poll/:id', validateMongoId, async (req, res) => {
+    getOne: async (req, res) => {
         try {
             const poll = await Poll.findOne({id: req.params.id});
 
@@ -33,9 +33,9 @@ module.exports.controller = (app) => {
         } catch (err) {
             res.sendStatus(500);
         }
-    });
+    },
 
-    app.post('/api/poll/', async (req, res) => {
+    create: async (req, res) => {
         const data = req.body;
 
         const inputs = [];
@@ -84,7 +84,7 @@ module.exports.controller = (app) => {
         }
     });
 
-    app.put('/api/poll/:id', validateMongoId, async (req, res) => {
+    edit: async (req, res) => {
         const data = req.body;
         const { id } = req.params;
 
@@ -134,9 +134,9 @@ module.exports.controller = (app) => {
             res.sendStatus(500);
             return;
         }
-    });
+    },
 
-    app.patch('/api/poll/:id', validateMongoId, async (req, res) => {
+    changeStatus: async (req, res) => {
         const { status } = req.body;
 
         const poll = await Poll.findById(req.params.id);
@@ -155,9 +155,9 @@ module.exports.controller = (app) => {
             res.sendStatus(500);
             return;
         }
-    });
+    },
 
-    app.delete('/api/poll/:id/', validateMongoId, async (req, res) => {
+    delete: async (req, res) => {
         const poll = await Poll.findById(req.params.id);
 
         if (!poll) {
@@ -178,6 +178,6 @@ module.exports.controller = (app) => {
             res.sendStatus(500);
             return;
         }
-    });
+    }
 
 };
