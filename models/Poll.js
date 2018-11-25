@@ -1,12 +1,17 @@
-const mongoose = require('../lib/connect'),
-    Schema = mongoose.Schema;
+const mongoose = require('../lib/connect');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const schema = new Schema({
     date: {
         type: Date,
         default: new Date()
     },
-    author: String, // TODO: Rel to user model
+    author: {
+        type: ObjectId,
+        ref: 'User'
+        // required: true
+    },
     url: {
         type: String,
         required: true
@@ -21,12 +26,7 @@ const schema = new Schema({
         required: true
     },
     forms: {
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Input'
-            }
-        ]
+        type: [Object]
     },
     questions: {
         type: [String], //TODO: Rel to question

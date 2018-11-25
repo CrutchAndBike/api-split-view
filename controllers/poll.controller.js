@@ -1,5 +1,15 @@
 const Poll = require('../models/Poll');
-const Input = require('../models/Input');
+
+class Input {
+    constructor(data) {
+        this.text = data.text;
+        this.type = data.type;
+
+        if (this.type === 'select') {
+            this.options = data.options;
+        }
+    }
+}
 
 module.exports = {
 
@@ -28,7 +38,58 @@ module.exports = {
     create: async (req, res) => {
         const data = req.body;
 
-        // [ {type: 'select', text: 'asdasdasd', options: ['asda']}, {type}]
+        const inputs = [];
+        
+        for (let i = 0; i < data.forms.length; i++) {
+            const el = data.forms[i];
+            
+            if (!el.text) {
+                res.status(400).send({ errMsg: 'Text is required!'});
+                return;
+            }
+
+            if (!el.type) {
+                res.status(400).send({ errMsg: 'Type is required!'})
+                return;
+            }
+
+            if (!['select', 'text'].includes(el.type)) {
+                res.status(400).send({ errMsg: 'Type is wrong!'})
+                return;
+            }
+
+            if (el.type == 'select' && (!el.options || el.options.length == 0)) {
+                res.status(400).send({ errMsg: 'Options is required for type "select"!'});
+                return;
+            }
+
+            const input = new Input(el);
+
+            inputs.push(input);
+        }
+
+        const poll = new Poll({
+            name: data.name,
+            url: 'test',
+            forms: inputs
+        });
+
+        try {
+            poll.save();
+            console.log('Poll created!');
+            res.sendStatus(200);
+        } catch (err) {
+            res.sendStatus(500);
+            return;
+        }
+    });
+
+    edit: async (req, res) => {
+        const data = req.body;
+        const { id } = req.params;
+
+        const poll = await Poll.findById(id);
+
         const inputs = [];
         
         for (let i = 0; i < data.forms.length; i++) {
@@ -63,16 +124,11 @@ module.exports = {
             inputs.push(await input.save());
         }
 
-        const poll = new Poll({
-            name: data.name,
-            url: 'test',
-            forms: inputs,
-            // questions
-        });
+        poll.inputs = inputs;
 
         try {
             poll.save();
-            console.log('Poll created!');
+            console.log('Poll saved!');
             res.sendStatus(200);
         } catch (err) {
             res.sendStatus(500);
