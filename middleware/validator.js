@@ -9,5 +9,5 @@ function validateMongoId(req, res, next) {
 }
 
 module.exports = {
-  validateMongoId
+    validateMongoId
 };

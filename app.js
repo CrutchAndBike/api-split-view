@@ -2,9 +2,9 @@ const createError = require('http-errors');
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const fs = require('fs');
-
 const bodyParser = require('body-parser');
+
+const router = require('./router');
 
 require('./lib/connect'); // Connect to DB
 
@@ -12,13 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-// Include controllers
-fs.readdirSync('controllers').forEach((file) => {
-    if (file.substr(-3) === '.js') {
-        let route = require('./controllers/' + file);
-        route.controller(app);
-    }
-});
+router(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
