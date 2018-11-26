@@ -14,7 +14,7 @@ module.exports = {
                 results = results.slice(start, end);
             }
             res.json(results);
-        } catch {
+        } catch (err) {
             res.status(400).json(err);
         }
     },
