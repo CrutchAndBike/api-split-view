@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const passport = require('passport');
 const axios = require('axios');
 
 module.exports.controller = (app) => {
@@ -95,16 +94,6 @@ module.exports.controller = (app) => {
             res.status(400).json(error);
         }
     });
-
-    // authorizatoin
-    app.get('/auth/yandex', passport.authenticate('yandex'));
-
-    // yandex auth callback
-    app.get('/auth/yandex/callback',
-        passport.authenticate('yandex', { failureRedirect: './login'}), // redirect to login page
-        (req, res) => { 
-            res.json({});
-        });
 
     // login via yandex token
     app.get('/login/yandex', async (req, res) => {

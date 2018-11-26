@@ -6,13 +6,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session); 
 const mongoose = require('mongoose');
 
-const passport = require('passport');
-const YandexStrategy = require('passport-yandex').Strategy;
-
 const bodyParser = require('body-parser');
-
-const YANDEX_CLIENT_ID = '';
-const YANDEX_CLIENT_SECRET = '';
 
 require('./lib/connect'); // Connect to DB
 
@@ -45,18 +39,6 @@ fs.readdirSync('controllers').forEach((file) => {
         route.controller(app);
     }
 });
-
-// passport
-// passport.use(new YandexStrategy({
-//         clientID: YANDEX_CLIENT_ID,
-//         clientSecret: YANDEX_CLIENT_SECRET,
-//         callbackURL: 'http://127.0.0.1:3001/auth/yandex/callback'
-//     },
-//     (accessToken, refreshToken, profile, done) => {
-//         console.log('Access token:', accessToken);
-//         console.log('Refresh token:', refreshToken);
-//     }
-// ));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
