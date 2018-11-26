@@ -29,7 +29,7 @@ module.exports = {
                 res.json(response);
             } else {
                 req.session.user_id = user._id;
-                res.json(user._id);
+                res.json(user.yandex_id);
             }
         } catch (error) {
             console.log(error);

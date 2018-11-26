@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 
 const router = require('./router');
 
+const { sessionSecret } = require('./conf/secret');
+
 require('./lib/connect'); // Connect to DB
 
 app.use(cors());
@@ -26,7 +28,7 @@ app.use(session({
         maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
     },
     unset: 'destroy',
-    secret: 'some-secret-key',
+    secret: sessionSecret || '',
     store: new MongoStore({
         mongooseConnection: mongoose.connection,
         autoRemove: 'native',
