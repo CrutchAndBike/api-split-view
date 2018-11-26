@@ -61,4 +61,4 @@ typings/
 .next
 
 # session secret
-./conf/secret.json
+conf/secret.*
