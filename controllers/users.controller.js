@@ -130,4 +130,10 @@ module.exports.controller = (app) => {
             res.status(400).json(error);
         }
     });
+
+    // logout
+    app.get('/logout', (req, res) => {
+        req.session.destroy();
+        res.json({});
+    });
 };
