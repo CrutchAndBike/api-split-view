@@ -10,7 +10,7 @@ const bodyParser = require('body-parser');
 
 const router = require('./router');
 
-const { sessionSecret } = require('./conf/secret');
+require('dotenv').config();
 
 require('./lib/connect'); // Connect to DB
 
@@ -28,7 +28,7 @@ app.use(session({
         maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
     },
     unset: 'destroy',
-    secret: sessionSecret || '',
+    secret: process.env.SESSION_SECRET || '',
     store: new MongoStore({
         mongooseConnection: mongoose.connection,
         autoRemove: 'native',
