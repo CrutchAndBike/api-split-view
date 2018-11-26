@@ -7,11 +7,13 @@
     "axios": "^0.18.0",
     "body-parser": "latest",
     "connect-mongo": "^2.0.2",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "forever": "^0.15.3",
     "http-errors": "latest",
-    "mongoose": "^5.3.13"
+    "mongoose": "^5.3.13",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
