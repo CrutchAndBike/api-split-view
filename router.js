@@ -1,4 +1,4 @@
-const { Poll, Result, User } = require('./controllers');
+const { Poll, Result, User, Auth } = require('./controllers');
 
 const { validateMongoId } = require('./middleware/validator');
 
@@ -7,6 +7,11 @@ module.exports = function (app) {
     app.get('/', (req, res) => {
         res.json({title: 'Express'});
     });
+
+    // Authorization
+    app.get('/login/yandex', Auth.loginYandex);
+
+    app.get('/logout', Auth.logout);
 
     // Poll
 
@@ -31,7 +36,7 @@ module.exports = function (app) {
     app.post('/api/insert-result', Result.save);
 
     // User
-    
+
     app.get('/api/users', User.getAll);
 
     app.get('/api/users/:id', validateMongoId, User.getOne);
@@ -41,5 +46,5 @@ module.exports = function (app) {
     app.put('/api/users/:id', validateMongoId, User.edit);
 
     app.delete('/api/users/:id', validateMongoId, User.delete);
-    
+
 }
