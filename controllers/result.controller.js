@@ -1,4 +1,5 @@
 const Result = require('../models/Result');
+const Poll = require('../models/Poll');
 
 module.exports = {
 
@@ -20,29 +21,62 @@ module.exports = {
     },
 
     getAnal: async (req, res) => {
-        const { pollId } = req.query;
+        const { authorId, status, limitFilter, offsetFilter } = req.body;
+        let results = [];
 
         try {
-            if (pollId) {
-                const resultsCount = await Result.find({ poll: pollId }).count();
-                // TODO доделать аналитику: возвращать % ответов за каждый вариант
-                res.json({ count: resultsCount });
-            } else {
-                res.status(400).send({ err: 'Missing required fields' });
+            // TODO add required check 'author'
+            const polls = await Poll.find(
+                {
+                    status: {
+                        '$in': status
+                    },
+                    author: authorId
+                },
+                '_id status name'
+            );
+            if (polls.length) {
+                for (let i = 0; i < polls.length; i++) {
+                    results.push({
+                        name: polls[i].name,
+                        status: polls[i].status,
+                        firstOptionCount: await Result.find(
+                            {
+                                poll: polls[i]._id,
+                                selectedVariant: 1
+                            }
+                        ).countDocuments(),
+                        secondOptionCount: await Result.find(
+                            {
+                                poll: polls[i]._id,
+                                selectedVariant: 2
+                            }
+                        ).countDocuments(),
+                    });
+                }
             }
+
+            if (offsetFilter || limitFilter) {
+                const start = offsetFilter ? offsetFilter : 0;
+                const end = limitFilter ? start + limitFilter : undefined;
+                results = results.slice(start, end);
+            }
+
+            res.json(results);
         } catch (err) {
+            console.log(err);
             res.status(400).json(err);
         }
     },
 
     save: async (req, res) => {
-        const { authorId, selectedVariantId, pollId } = req.body;
+        const { authorId, selectedVariant, pollId } = req.body;
 
         try {
-            if (authorId && selectedVariantId && pollId) {
+            if (authorId && selectedVariant && pollId) {
                 const newResult = await Result({
                     author: authorId,
-                    selectedVariant: selectedVariantId,
+                    selectedVariant: selectedVariant,
                     poll: pollId
                 });
                 await newResult.save();

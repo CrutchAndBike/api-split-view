@@ -26,7 +26,7 @@ module.exports = function (app) {
 
     app.get('/api/results', Result.getAll);
 
-    app.get('/api/analytic-result', Result.getAnal);
+    app.post('/api/analytic-result', Result.getAnal);
 
     app.post('/api/insert-result', Result.save);
 
