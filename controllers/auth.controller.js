@@ -39,6 +39,6 @@ module.exports = {
 
     logout: (req, res) => {
         req.session.destroy();
-        res.json({});
+        res.clearCookie("api-split-view").json({});
     }
 };
