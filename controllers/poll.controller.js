@@ -1,4 +1,6 @@
 const Poll = require('../models/Poll');
+const { uploadToCloud, deleteFromCloud } = require('../lib/asw');
+
 const inputTypes = ['select', 'text'];
 const statusTypes = ['wait', 'active', 'close'];
 
@@ -70,9 +72,21 @@ module.exports = {
             inputs.push(new Input(input));
         }
 
+        if (!req.files['a'] || !req.files['b']) {
+            res.sendStatus(400);
+            return;
+        }
+
+        const url_a = await uploadToCloud(req.files['a']);
+        const url_b = await uploadToCloud(req.files['b']);
+
         const poll = new Poll({
             name: data.name,
-            forms: inputs
+            forms: inputs,
+            variant: {
+                a: url_a,
+                b: url_b
+            }
         });
 
         try {
@@ -152,6 +166,9 @@ module.exports = {
             res.sendStatus(404);
             return;
         }
+
+        deleteFromCloud(poll.variant.a);
+        deleteFromCloud(poll.variant.b);
 
         console.log('Poll deleted!');
         res.sendStatus(200);

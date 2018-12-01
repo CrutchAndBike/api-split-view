@@ -3,14 +3,18 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const router = require('./router');
+
+require('dotenv').config();
 
 require('./lib/connect'); // Connect to DB
 
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(fileUpload());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 router(app);
 

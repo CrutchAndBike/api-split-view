@@ -24,9 +24,15 @@ const schema = new Schema({
     forms: {
         type: [Object]
     },
-    questions: {
-        type: [String], //TODO: Rel to question
-        // required: true
+    variant: {
+        a: {
+            type: String,
+            required: true
+        },
+        b: {
+            type: String,
+            required: true
+        }
     }
 });
 
