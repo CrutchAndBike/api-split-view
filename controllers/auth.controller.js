@@ -12,7 +12,7 @@ module.exports = {
                 }
             });
             const userData = data.data;
-            
+
             let user = await User.findOne({ yandex_id: userData.id });
 
             if(!user) {
@@ -29,7 +29,7 @@ module.exports = {
                 res.json(response);
             } else {
                 req.session.user_id = user._id;
-                res.json(user.yandex_id);
+                res.json(user);
             }
         } catch (error) {
             console.log(error);

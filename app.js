@@ -2,8 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const app = express();
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session); 
-const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -12,7 +11,7 @@ const router = require('./router');
 
 require('dotenv').config();
 
-require('./lib/connect'); // Connect to DB
+const mongoose = require('./lib/connect'); // Connect to DB
 
 app.use(cors());
 app.use(express.json());
@@ -52,6 +51,7 @@ app.use(function(err, req, res, next) {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
     // render the error page
+    console.err(err);
     res.sendStatus(err.status || 500);
 });
 
