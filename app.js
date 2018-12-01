@@ -12,6 +12,7 @@ const router = require('./router');
 require('dotenv').config();
 
 const mongoose = require('./lib/connect'); // Connect to DB
+const { checkSession } = require('./middleware/checkSession');
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,8 @@ app.use(session({
         stringify: true
     })
 }));
+
+app.use(checkSession);
 
 router(app);
 

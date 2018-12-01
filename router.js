@@ -1,7 +1,6 @@
 const { Poll, Result, User, Auth } = require('./controllers');
 
 const { validateMongoId } = require('./middleware/validator');
-const { checkSession } = require('./middleware/checkSession');
 
 module.exports = function (app) {
 
@@ -11,8 +10,6 @@ module.exports = function (app) {
 
     // Authorization
     app.get('/login/yandex', Auth.loginYandex);
-
-    app.use(checkSession);
 
     app.get('/logout', Auth.logout);
 
@@ -39,7 +36,7 @@ module.exports = function (app) {
     app.post('/api/insert-result', Result.save);
 
     // User
-    
+
     app.get('/api/users', User.getAll);
 
     app.get('/api/users/:id', validateMongoId, User.getOne);
@@ -49,5 +46,5 @@ module.exports = function (app) {
     app.put('/api/users/:id', validateMongoId, User.edit);
 
     app.delete('/api/users/:id', validateMongoId, User.delete);
-    
+
 }
