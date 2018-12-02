@@ -19,13 +19,15 @@
     "validator": "^10.9.0"
   },
   "devDependencies": {
+    "eslint": "^5.9.0",
     "nodemon": "^1.18.6"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint",
     "dev": "nodemon ./bin/www",
     "pro": "forever -a -l forever.log --minUptime 1000 --spinSleepTime 3000 start ./bin/www",
-    "prostop": "forever stop ./bin/www"
+    "prostop": "forever stop ./bin/www",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
