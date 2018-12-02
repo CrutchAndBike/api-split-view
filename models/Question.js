@@ -1,16 +1,16 @@
 const mongoose = require('../lib/connect'),
-    Schema = mongoose.Schema;
+	Schema = mongoose.Schema;
 
 const schema = new Schema({
-    variant: {
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Variant'
-            }
-        ],
-        required: true
-    }
+	variant: {
+		type: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Variant'
+			}
+		],
+		required: true
+	}
 });
 
 const question = mongoose.model('Question', schema);
