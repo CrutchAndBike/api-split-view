@@ -77,9 +77,14 @@ module.exports = {
             return;
         }
 
-        const url_a = await uploadToCloud(req.files['a']);
-        const url_b = await uploadToCloud(req.files['b']);
+        const url_a = uploadToCloud(req.files['a']);
+        const url_b = uploadToCloud(req.files['b']);
 
+        if (!url_a || !url_b) {
+            res.sendStatus(500);
+            return;
+        }
+        
         const poll = new Poll({
             name: data.name,
             forms: inputs,
