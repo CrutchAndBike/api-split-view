@@ -10,10 +10,7 @@ const UserSchema = new Schema({
     gender: String,
     age: Number,
     avatar: String,
-    isAdmin: {
-        type: Boolean,
-        default: false
-    }
+    yandex_id: String
 });
 
 
