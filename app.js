@@ -2,22 +2,22 @@ const createError = require('http-errors');
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const mongoose = require('./lib/connect');
 const MongoStore = require('connect-mongo')(session);
-
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+
+const { checkSession } = require('./middleware/checkSession');
 
 const router = require('./router');
 
 require('dotenv').config();
 
-const mongoose = require('./lib/connect'); // Connect to DB
-const { checkSession } = require('./middleware/checkSession');
-
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
+app.use(fileUpload());
 app.use(express.json());
-app.use(bodyParser.urlencoded({extended: false}));
-
+app.use(bodyParser.urlencoded({extended: true}));
 
 // session
 app.use(session({
@@ -25,7 +25,7 @@ app.use(session({
     resave: true,
     saveUninitialized: false,
     cookie: {
-        maxAge: 14 * 24 * 60 *60 * 1000 // 2 weeks
+        maxAge: 14 * 24 * 60 * 60 * 1000 // 2 weeks
     },
     unset: 'destroy',
     secret: process.env.SESSION_SECRET || '',
