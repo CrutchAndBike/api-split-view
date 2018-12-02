@@ -35,6 +35,9 @@ const schema = new Schema({
             }
         ],
         required: true
+    },
+    forms: {
+        type: [Object]
     }
 });
 
