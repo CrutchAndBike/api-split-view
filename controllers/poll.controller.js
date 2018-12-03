@@ -28,7 +28,7 @@ function isValidInput(input) {
 	const hasOptions = input.options && input.options != 0;
 
 	if (input.type == 'select' && !hasOptions) return false;
-    
+
 	return true;
 }
 
@@ -42,7 +42,7 @@ module.exports = {
 
 	getOne: async (req, res) => {
 		try {
-			const poll = await Poll.findOne({id: req.params.id});
+			const poll = await Poll.findOne({ id: req.params.id });
 
 			if (poll) {
 				res.json(poll);
@@ -58,8 +58,14 @@ module.exports = {
 
 	create: async (req, res) => {
 		const data = req.body;
+		data.forms = data.forms || [];
 
 		const inputs = [];
+
+		if (!data.name) {
+			res.sendStatus(400);
+			return;
+		}
 
 		for (let i = 0; i < data.forms.length; i++) {
 			const input = data.forms[i];
@@ -84,7 +90,7 @@ module.exports = {
 			res.sendStatus(500);
 			return;
 		}
-        
+
 		const poll = new Poll({
 			name: data.name,
 			forms: inputs,
@@ -109,8 +115,15 @@ module.exports = {
 		const data = req.body;
 		const { id } = req.params;
 
+		data.forms = data.forms || [];
+
+		if (!data.name) {
+			res.sendStatus(400);
+			return;
+		}
+
 		const inputs = [];
-        
+
 		for (let i = 0; i < data.forms.length; i++) {
 			const input = data.forms[i];
 
@@ -122,7 +135,7 @@ module.exports = {
 			inputs.push(new Input(input));
 		}
 
-		const poll = await Poll.findOneAndUpdate({_id: id}, {
+		const poll = await Poll.findOneAndUpdate({ _id: id }, {
 			$set: {
 				name: data.name,
 				forms: inputs
@@ -130,7 +143,7 @@ module.exports = {
 		});
 
 		if (!poll) {
-			res.sendStatus(400);      
+			res.sendStatus(400);
 			return;
 		}
 
@@ -143,18 +156,18 @@ module.exports = {
 		const { id } = req.params;
 
 		if (!statusTypes.includes(status)) {
-			res.status(403).send({errMsg: 'Wrong status'});
+			res.status(403).send({ errMsg: 'Wrong status' });
 			return;
 		}
 
-		const poll = await Poll.findOneAndUpdate({_id: id}, {
+		const poll = await Poll.findOneAndUpdate({ _id: id }, {
 			$set: {
 				status: status
 			}
 		});
 
 		if (!poll) {
-			res.sendStatus(400);            
+			res.sendStatus(400);
 			return;
 		}
 
