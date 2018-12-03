@@ -78,7 +78,7 @@ module.exports = {
 			inputs.push(new Input(input));
 		}
 
-		if (!req.files['a'] || !req.files['b']) {
+		if (!req.files || !req.files['a'] || !req.files['b']) {
 			res.sendStatus(400);
 			return;
 		}

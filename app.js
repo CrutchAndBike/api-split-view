@@ -12,6 +12,7 @@ const { checkSession } = require('./middleware/checkSession');
 
 const router = require('./router');
 
+const isDev = process.env.NODE_ENV === 'development';
 require('dotenv').config();
 
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -38,7 +39,7 @@ app.use(session({
 	})
 }));
 
-app.use(checkSession);
+isDev || app.use(checkSession);
 
 router(app);
 

@@ -5,7 +5,7 @@ const { validateMongoId } = require('./middleware/validator');
 module.exports = function (app) {
 
 	app.get('/', (req, res) => {
-		res.json({title: 'Express'});
+		res.json({ title: 'Express' });
 	});
 
 	// Authorization

@@ -15,7 +15,7 @@ module.exports = {
 
 			let user = await User.findOne({ yandex_id: userData.id });
 
-			if(!user) {
+			if (!user) {
 				user = new User({
 					name: userData.real_name,
 					age: '',
