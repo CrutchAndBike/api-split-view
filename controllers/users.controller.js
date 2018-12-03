@@ -30,7 +30,7 @@ module.exports = {
 			res.status(500).json(error);
 		}
 	},
-    
+
 	create: async (req, res) => {
 		const user = new User({
 			name: req.body.name,
@@ -47,7 +47,7 @@ module.exports = {
 			res.status(400).json(error);
 		}
 	},
-    
+
 	edit: async (req, res) => {
 		try {
 			let response = await User.findByIdAndUpdate(req.params.id, {
