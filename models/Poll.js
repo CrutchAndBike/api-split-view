@@ -15,7 +15,7 @@ const schema = new Schema({
 	status: {
 		type: String,
 		required: true,
-		default: 'wait' // wait, active, closed,
+		default: 'wait' // wait, active, close
 	},
 	name: {
 		type: String,
