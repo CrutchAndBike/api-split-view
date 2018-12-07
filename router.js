@@ -28,6 +28,8 @@ module.exports = function (app) {
 
     app.post('/api/base-analytic', Result.getBaseAnalytic);
 
+    app.get('/api/detailed-analytic/:id', validateMongoId, Result.getDetailedAnalyic);
+
     app.post('/api/insert-result', Result.save);
 
     // User

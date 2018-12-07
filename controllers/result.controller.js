@@ -58,6 +58,18 @@ module.exports = {
         }
     },
 
+    getDetailedAnalyic: async (req, res) => {
+        const pollId = req.params.id;
+        try {
+            const results = await Result.find({poll: pollId},
+                'selectedVariant createdOn forms');
+            res.json(results);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json(err);
+        }
+    },
+
     getBaseAnalytic: async (req, res) => {
         const { authorId, status, limitFilter, offsetFilter } = req.body;
         let results = [];

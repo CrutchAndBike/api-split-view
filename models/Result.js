@@ -28,13 +28,9 @@ const schema = new Schema({
     },
     // Id опроса
     poll: {
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Poll'
-            }
-        ],
-        required: true
+            type: Schema.Types.ObjectId,
+            ref: 'Poll',
+            required: true
     },
     forms: {
         type: [Object]
