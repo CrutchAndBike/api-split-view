@@ -1,17 +1,17 @@
 const mongoose = require('../lib/connect'),
-    Schema = mongoose.Schema;
+	Schema = mongoose.Schema;
 
 const schema = new Schema({
-    // Дата создания
-    createdOn: {
-        type: Date,
-        required: true,
-        default: new Date()
-    },
-    // Автор
-    author: {
-        type: String,
-        /* TODO поменять на уник. идентификатор
+	// Дата создания
+	createdOn: {
+		type: Date,
+		required: true,
+		default: new Date()
+	},
+	// Автор
+	author: {
+		type: String,
+		/* TODO поменять на уник. идентификатор
         type: [
             {
                 type: Schema.Types.ObjectId,

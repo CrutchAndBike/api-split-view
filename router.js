@@ -1,47 +1,52 @@
-const { Poll, Result, User } = require('./controllers');
+const { Poll, Result, User, Auth } = require('./controllers');
 
 const { validateMongoId } = require('./middleware/validator');
 
 module.exports = function (app) {
 
-    app.get('/', (req, res) => {
-        res.json({title: 'Express'});
-    });
+	app.get('/', (req, res) => {
+		res.json({ title: 'Express' });
+	});
 
-    // Poll
+	// Authorization
+	app.get('/login/yandex', Auth.loginYandex);
 
-    app.get('/api/poll', Poll.getAll);
+	app.get('/logout', Auth.logout);
 
-    app.get('/api/poll/:id', validateMongoId, Poll.getOne);
+	// Poll
 
-    app.put('/api/poll/:id', validateMongoId, Poll.edit);
+	app.get('/api/poll', Poll.getAll);
 
-    app.post('/api/poll', Poll.create);
+	app.get('/api/poll/:id', validateMongoId, Poll.getOne);
 
-    app.patch('/api/poll/:id', validateMongoId, Poll.changeStatus);
+	app.put('/api/poll/:id', validateMongoId, Poll.edit);
 
-    app.delete('/api/poll/:id', validateMongoId, Poll.delete);
+	app.post('/api/poll', Poll.create);
 
-    // Result
+	app.patch('/api/poll/:id', validateMongoId, Poll.changeStatus);
 
-    app.get('/api/results', Result.getAll);
+	app.delete('/api/poll/:id', validateMongoId, Poll.delete);
 
-    app.post('/api/base-analytic', Result.getBaseAnalytic);
+  app.post('/api/base-analytic', Result.getBaseAnalytic);
 
-    app.get('/api/detailed-analytic/:id', validateMongoId, Result.getDetailedAnalyic);
+  app.get('/api/detailed-analytic/:id', validateMongoId, Result.getDetailedAnalyic);
 
-    app.post('/api/insert-result', Result.save);
+	app.get('/api/results', Result.getAll);
 
-    // User
-    
-    app.get('/api/users', User.getAll);
+	app.get('/api/analytic-result', Result.getAnal);
 
-    app.get('/api/users/:id', validateMongoId, User.getOne);
+	app.post('/api/insert-result', Result.save);
 
-    app.post('/api/users', User.create);
+	// User
 
-    app.put('/api/users/:id', validateMongoId, User.edit);
+	app.get('/api/users', User.getAll);
 
-    app.delete('/api/users/:id', validateMongoId, User.delete);
-    
-}
+	app.get('/api/users/:id', validateMongoId, User.getOne);
+
+	app.post('/api/users', User.create);
+
+	app.put('/api/users/:id', validateMongoId, User.edit);
+
+	app.delete('/api/users/:id', validateMongoId, User.delete);
+
+};

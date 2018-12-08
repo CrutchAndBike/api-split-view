@@ -1,5 +1,5 @@
-# API для проекта "Split View"
-
+# API для проекта "Split View" [![Build Status](https://travis-ci.org/CrutchAndBike/api-split-view.svg?branch=master)](https://travis-ci.org/CrutchAndBike/api-split-view)
+ 
 ## Требования для запуска:
 
 1. Нужна установленная и запущенная MongoDB (https://www.mongodb.com).
@@ -10,6 +10,10 @@
  Для упрощения разработки на данный момент не требуется.
  
 ## Запуск:
+Установка зависимостей:
+```bash
+npm ci
+```
 
 Dev-режим:
 ```bash

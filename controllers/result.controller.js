@@ -41,18 +41,17 @@ function isValidForm(input) {
 
 module.exports = {
 
-    getAll: async (req, res) => {
-        const limitFilter = req.query.limit && parseInt(req.query.limit);
-        const offsetFilter = req.query.offset && parseInt(req.query.offset);
-
-        try {
-            let results = await Result.find({ poll: req.query.poll }, 'creatdOn poll selectedVariant author forms');
-            if (offsetFilter || limitFilter) {
-                const start = offsetFilter ? offsetFilter : 0;
-                const end = limitFilter ? start + limitFilter : undefined;
-                results = results.slice(start, end);
-            }
-            res.json(results);
+	getAll: async (req, res) => {
+		const limitFilter = req.query.limit && parseInt(req.query.limit);
+		const offsetFilter = req.query.offset && parseInt(req.query.offset);
+    try {
+        let results = await Result.find({ poll: req.query.poll }, 'creatdOn poll selectedVariant author forms');
+        if (offsetFilter || limitFilter) {
+            const start = offsetFilter ? offsetFilter : 0;
+            const end = limitFilter ? start + limitFilter : undefined;
+            results = results.slice(start, end);
+        }
+        res.json(results);
         } catch (err) {
             res.status(400).json(err);
         }
@@ -111,7 +110,7 @@ module.exports = {
                 const end = limitFilter ? start + limitFilter : undefined;
                 results = results.slice(start, end);
             }
-
+      
             res.json(results);
         } catch (err) {
             console.log(err);

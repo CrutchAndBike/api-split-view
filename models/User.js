@@ -1,21 +1,18 @@
 const mongoose = require('../lib/connect'),
-    Schema = mongoose.Schema;
+	Schema = mongoose.Schema;
 
 
 const UserSchema = new Schema({
-    name: {
-        type: String,
-        required: [true, 'Let us know you by adding your name!']
-    },
-    gender: String,
-    age: Number,
-    avatar: String,
-    isAdmin: {
-        type: Boolean,
-        default: false
-    }
+	name: {
+		type: String,
+		required: [true, 'Let us know you by adding your name!']
+	},
+	gender: String,
+	age: Number,
+	avatar: String,
+	yandex_id: String
 });
 
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 module.exports = User;
