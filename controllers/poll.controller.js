@@ -35,9 +35,30 @@ function isValidInput(input) {
 module.exports = {
 
 	getAll: async (req, res) => {
-		const polls = await Poll.find();
+		const { authorId, status } = req.query;
+		const limitFilter = req.query.limit && parseInt(req.query.limit);
+		const offsetFilter = req.query.offset && parseInt(req.query.offset);
 
-		res.json(polls);
+		if (!authorId) {
+			return res.json([]);
+		}
+
+		let config = {
+			author: req.query.authorId
+		};
+		status ? config.status = status : '';
+
+		try {
+			let polls = await Poll.find(config);
+			if (polls.length && (offsetFilter || limitFilter)) {
+				const start = offsetFilter ? offsetFilter : 0;
+				const end = limitFilter ? start + limitFilter : undefined;
+				polls = polls.slice(start, end);
+			}
+			res.json(polls);
+		} catch (err) {
+			res.status(400).json(err);
+		}
 	},
 
 	getOne: async (req, res) => {
