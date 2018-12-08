@@ -19,22 +19,22 @@ const schema = new Schema({
             }
         ],
         */
-        required: true
-    },
-    // Выбранный вариант
-    selectedVariant: {
-        type: Number,
-        required: true
-    },
-    // Id опроса
-    poll: {
-            type: Schema.Types.ObjectId,
-            ref: 'Poll',
-            required: true
-    },
-    forms: {
-        type: [Object]
-    }
+		required: true
+	},
+	// Выбранный вариант
+	selectedVariant: {
+		type: Number,
+		required: true
+	},
+	// Id опроса
+	poll: {
+		type: Schema.Types.ObjectId,
+		ref: 'Poll',
+		required: true
+	},
+	forms: {
+		type: [Object]
+	}
 });
 
 const result = mongoose.model('Result', schema);

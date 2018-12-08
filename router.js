@@ -27,9 +27,9 @@ module.exports = function (app) {
 
 	app.delete('/api/poll/:id', validateMongoId, Poll.delete);
 
-  app.post('/api/base-analytic', Result.getBaseAnalytic);
+	app.post('/api/base-analytic', Result.getBaseAnalytic);
 
-  app.get('/api/detailed-analytic/:id', validateMongoId, Result.getDetailedAnalyic);
+	app.get('/api/detailed-analytic/:id', validateMongoId, Result.getDetailedAnalyic);
 
 	app.get('/api/results', Result.getAll);
 
