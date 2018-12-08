@@ -26,6 +26,7 @@ app.use(session({
 	resave: true,
 	saveUninitialized: false,
 	cookie: {
+	    httpOnly: false,
 		maxAge: 14 * 24 * 60 * 60 * 1000 // 2 weeks
 	},
 	unset: 'destroy',
