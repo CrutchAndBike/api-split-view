@@ -23,29 +23,17 @@ const schema = new Schema({
 	},
 	// Выбранный вариант
 	selectedVariant: {
-		/* TODO поменять на уник. идентификатор
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Variant'
-            }
-        ],
-        */
-		type: String,
+		type: Number,
 		required: true
 	},
 	// Id опроса
 	poll: {
-		type: String,
-		/* TODO поменять на уник. идентификатоор
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Poll'
-            }
-        ],
-        */
+		type: Schema.Types.ObjectId,
+		ref: 'Poll',
 		required: true
+	},
+	forms: {
+		type: [Object]
 	}
 });
 
