@@ -87,6 +87,7 @@ module.exports = {
 			if (polls && polls.length) {
 				for (let i = 0; i < polls.length; i++) {
 					results.push({
+						pollId: polls[i]._id,
 						name: polls[i].name,
 						status: polls[i].status,
 						firstOptionCount: await Result.find(
