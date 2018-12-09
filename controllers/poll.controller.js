@@ -35,19 +35,19 @@ function isValidInput(input) {
 module.exports = {
 
 	getAll: async (req, res) => {
-		const { authorId, status } = req.query;
+		const { status } = req.query;
+		const { user_id } = req.session;
 		const limitFilter = req.query.limit && parseInt(req.query.limit);
 		const offsetFilter = req.query.offset && parseInt(req.query.offset);
 
-		if (!authorId) {
+		if (!user_id) {
 			return res.json([]);
 		}
 
 		let config = {
-			author: req.query.authorId
+			author: user_id
 		};
 		status ? config.status = status : '';
-
 		try {
 			let polls = await Poll.find(config);
 			if (polls.length && (offsetFilter || limitFilter)) {
