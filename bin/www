@@ -9,9 +9,9 @@ var debug = require('debug')('express:server');
 var http = require('http');
 var https = require('https');
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/kauzlein.ru/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/kauzlein.ru/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/kauzlein.ru/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/cert.pem', 'utf8');
+const ca = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/chain.pem', 'utf8');
 
 const credentials = {
   key: privateKey,
