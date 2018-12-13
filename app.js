@@ -15,7 +15,18 @@ const router = require('./router');
 const isDev = process.env.NODE_ENV === 'development';
 require('dotenv').config();
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+const whitelist = ['http://localhost:3000', 'http://217.23.138.53:80'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
+    credentials: true
+};
+app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
