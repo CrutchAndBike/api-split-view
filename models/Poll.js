@@ -26,7 +26,7 @@ const schema = new Schema({
 	},
 	variant: {
 		a: {
-			buttonCaption: {
+			name: {
 				type: String
 			},
 			value: {
@@ -35,7 +35,7 @@ const schema = new Schema({
 			}
 		},
 		b: {
-			buttonCaption: {
+			name: {
 				type: String
 			},
 			value: {

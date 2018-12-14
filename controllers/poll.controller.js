@@ -106,7 +106,7 @@ module.exports = {
 
 		const url_a = uploadToCloud(req.files['a']);
 		const url_b = uploadToCloud(req.files['b']);
-		const defaultButtonCaption = 'Выбрать';
+		const defaultName = 'Выбрать';
 
 		if (!url_a || !url_b) {
 			res.sendStatus(500);
@@ -119,11 +119,11 @@ module.exports = {
 			variant: {
 				a: {
 					value: url_a,
-					buttonCaption: data.buttonACaption ? data.buttonACaption : defaultButtonCaption
+					name: data.nameA ? data.nameA : defaultName
 				},
 				b: {
 					value: url_b,
-					buttonCaption: data.buttonBCaption ? data.buttonBCaption : defaultButtonCaption
+					name: data.nameB ? data.nameB : defaultName
 				}
 			}
 		});
