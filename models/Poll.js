@@ -26,12 +26,22 @@ const schema = new Schema({
 	},
 	variant: {
 		a: {
-			type: String,
-			required: true
+			name: {
+				type: String
+			},
+			value: {
+				type: String,
+				required: true
+			}
 		},
 		b: {
-			type: String,
-			required: true
+			name: {
+				type: String
+			},
+			value: {
+				type: String,
+				required: true
+			}
 		}
 	}
 });

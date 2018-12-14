@@ -106,6 +106,7 @@ module.exports = {
 
 		const url_a = uploadToCloud(req.files['a']);
 		const url_b = uploadToCloud(req.files['b']);
+		const defaultName = 'Выбрать';
 
 		if (!url_a || !url_b) {
 			res.sendStatus(500);
@@ -116,8 +117,14 @@ module.exports = {
 			name: data.name,
 			forms: inputs,
 			variant: {
-				a: url_a,
-				b: url_b
+				a: {
+					value: url_a,
+					name: data.nameA ? data.nameA : defaultName
+				},
+				b: {
+					value: url_b,
+					name: data.nameB ? data.nameB : defaultName
+				}
 			}
 		});
 
@@ -206,8 +213,8 @@ module.exports = {
 			return;
 		}
 
-		deleteFromCloud(poll.variant.a);
-		deleteFromCloud(poll.variant.b);
+		deleteFromCloud(poll.variant.a.value);
+		deleteFromCloud(poll.variant.b.value);
 
 		console.log('Poll deleted!');
 		res.sendStatus(200);
