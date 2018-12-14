@@ -15,7 +15,7 @@ const router = require('./router');
 const isDev = process.env.NODE_ENV === 'development';
 require('dotenv').config();
 
-const whitelist = ['http://localhost:3000', 'http://217.23.138.53:80', 'http://kauzlein.ru:80'];
+const whitelist = ['http://localhost:3000', 'http://217.23.138.53:80', 'https://217.23.138.53:80', 'http://kauzlein.ru:80', 'https://kauzlein.ru:80'];
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
