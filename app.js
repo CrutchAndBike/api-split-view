@@ -17,14 +17,14 @@ require('dotenv').config();
 
 const whitelist = ['http://localhost:3000', 'http://217.23.138.53:80', 'https://217.23.138.53:80', 'http://kauzlein.ru:80', 'https://kauzlein.ru:80'];
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    credentials: true
+	origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1 || !origin) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
+	credentials: true
 };
 app.use(cors(corsOptions));
 app.use(fileUpload());
