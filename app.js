@@ -1,4 +1,4 @@
-const createError = require('http-errors');
+// const createError = require('http-errors');
 const express = require('express');
 const app = express();
 const session = require('express-session');
@@ -52,7 +52,7 @@ isDev || app.use(checkSession);
 router(app);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res) {
 	res.sendStatus(404);
 });
 
