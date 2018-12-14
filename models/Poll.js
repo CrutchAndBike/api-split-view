@@ -31,7 +31,7 @@ const schema = new Schema({
 			},
 			value: {
 				type: String,
-				require: true
+				required: true
 			}
 		},
 		b: {
@@ -40,7 +40,7 @@ const schema = new Schema({
 			},
 			value: {
 				type: String,
-				require: true
+				required: true
 			}
 		}
 	}
