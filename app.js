@@ -15,7 +15,12 @@ const router = require('./router');
 const isDev = process.env.NODE_ENV === 'development';
 require('dotenv').config();
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+// const whitelist = ['http://localhost:3000', 'http://217.23.138.53:80', 'https://217.23.138.53:80', 'http://kauzlein.ru:80', 'https://kauzlein.ru:80'];
+const corsOptions = {
+	origin: 'https://kauzlein.ru',
+	credentials: true
+};
+app.use(cors(corsOptions));
 app.use(fileUpload());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

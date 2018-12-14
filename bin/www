@@ -3,10 +3,21 @@
 /**
  * Module dependencies.
  */
-
+const fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('express:server');
 var http = require('http');
+var https = require('https');
+
+const privateKey = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/cert.pem', 'utf8');
+const ca = fs.readFileSync('/home/yandex/ssl/kauzlein.ru/chain.pem', 'utf8');
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+  ca: ca
+};
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +31,8 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(3443);
 /**
  * Listen on provided port, on all network interfaces.
  */
