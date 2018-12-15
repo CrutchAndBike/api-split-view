@@ -1,5 +1,5 @@
-const mongoose = require('../lib/connect'),
-	Schema = mongoose.Schema;
+const mongoose = require('../lib/connect');
+const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const schema = new Schema({
