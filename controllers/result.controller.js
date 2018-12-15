@@ -28,14 +28,14 @@ function isValidForm(input) {
 
 	if (!typeOk) {
 		return false;
-	} 
+	}
 
 	const hasOptions = input.options && input.options != 0;
 
 	if (input.type == 'select' && !hasOptions) {
 		return false;
 	}
-    
+
 	return true;
 }
 
@@ -112,7 +112,7 @@ module.exports = {
 				const end = limitFilter ? start + limitFilter : undefined;
 				results = results.slice(start, end);
 			}
-      
+
 			res.json(results);
 		} catch (err) {
 			console.log(err);
@@ -121,7 +121,8 @@ module.exports = {
 	},
 
 	save: async (req, res) => {
-		const { user_id } = req.session;
+        console.log(req.session);
+        const { user_id } = req.session;
 		const { selectedVariant, pollId, forms } = req.body;
 
 		const inputsForm = [];

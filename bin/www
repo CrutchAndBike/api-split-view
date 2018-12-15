@@ -11,7 +11,7 @@ var https = require('https');
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const credentials = isDev || {
+const credentials = {
   key: fs.readFileSync('/home/yandex/ssl/kauzlein.ru/privkey.pem', 'utf8'),
   cert: fs.readFileSync('/home/yandex/ssl/kauzlein.ru/cert.pem', 'utf8'),
   ca: fs.readFileSync('/home/yandex/ssl/kauzlein.ru/chain.pem', 'utf8')
@@ -30,7 +30,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
-isDev || httpsServer.listen(3443);
+httpsServer.listen(3443);
 /**
  * Listen on provided port, on all network interfaces.
  */
