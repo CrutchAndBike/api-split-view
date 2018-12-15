@@ -101,16 +101,16 @@ module.exports = {
 			inputs.push(new Input(input));
 		}
 
-		if (!req.files || !req.files['a'] || !req.files['b']) {
+		if ((!req.files || !req.files['a'] || !req.files['b']) && (!data.textA || !data.textB)) {
 			res.sendStatus(400);
 			return;
 		}
 
-		const url_a = uploadToCloud(req.files['a']);
-		const url_b = uploadToCloud(req.files['b']);
+		const valueA = data.pollType !== 'text' ? uploadToCloud(req.files['a']) : data.textA;
+		const valueB = data.pollType !== 'text' ? uploadToCloud(req.files['b']) : data.textB;
 		const defaultName = 'Выбрать';
 
-		if (!url_a || !url_b) {
+		if (!valueA || !valueB) {
 			res.sendStatus(500);
 			return;
 		}
@@ -122,11 +122,11 @@ module.exports = {
 			author: user_id,
 			variant: {
 				a: {
-					value: url_a,
+					value: valueA,
 					name: data.nameA ? data.nameA : defaultName
 				},
 				b: {
-					value: url_b,
+					value: valueB,
 					name: data.nameB ? data.nameB : defaultName
 				}
 			}
