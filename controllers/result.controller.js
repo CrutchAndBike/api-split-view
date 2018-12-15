@@ -70,19 +70,21 @@ module.exports = {
 	},
 
 	getBaseAnalytic: async (req, res) => {
-		const { status, limitFilter, offsetFilter } = req.body;
+		const { status, limitFilter, offsetFilter, pollId } = req.body;
 		const { user_id } = req.session;
 		let results = [];
+
+		let config = {
+			author: user_id
+		};
+
+		status ? config.status = { '$in': status } : '';
+		poll ? config.poll = pollId : '';
 
 		try {
 			// TODO add required check 'author'
 			const polls = await Poll.find(
-				{
-					status: {
-						'$in': status
-					},
-					author: user_id
-				},
+				config,
 				'_id status name'
 			);
 			if (polls && polls.length) {
