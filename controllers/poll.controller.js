@@ -3,6 +3,7 @@ const { uploadToCloud, deleteFromCloud } = require('../lib/asw');
 
 const inputTypes = ['select', 'text'];
 const statusTypes = ['wait', 'active', 'close'];
+const pollTypes = ['image', 'text', 'video', 'audio'];
 
 class Input {
 	constructor(data) {
@@ -83,7 +84,7 @@ module.exports = {
 
 		const inputs = [];
 
-		if (!data.name) {
+		if (!data.name && !pollTypes.includes(data.pollType)) {
 			res.sendStatus(400);
 			return;
 		}
@@ -115,6 +116,7 @@ module.exports = {
 
 		const poll = new Poll({
 			name: data.name,
+			type: data.pollType,
 			forms: inputs,
 			variant: {
 				a: {
