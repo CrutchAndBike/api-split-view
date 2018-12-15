@@ -64,7 +64,7 @@ module.exports = {
 
 	getOne: async (req, res) => {
 		try {
-			const poll = await Poll.findOne({ id: req.params.id });
+			const poll = await Poll.findOne({ _id: req.params.id });
 
 			if (poll) {
 				res.json(poll);
@@ -145,6 +145,7 @@ module.exports = {
 
 	edit: async (req, res) => {
 		const data = req.body;
+		const { user_id } = req.session;
 		const { id } = req.params;
 
 		data.forms = data.forms || [];
@@ -167,7 +168,7 @@ module.exports = {
 			inputs.push(new Input(input));
 		}
 
-		const poll = await Poll.findOneAndUpdate({ _id: id }, {
+		const poll = await Poll.findOneAndUpdate({ _id: id, author: user_id }, {
 			$set: {
 				name: data.name,
 				forms: inputs
@@ -186,13 +187,14 @@ module.exports = {
 	changeStatus: async (req, res) => {
 		const { status } = req.body;
 		const { id } = req.params;
+		const { user_id } = req.session;
 
 		if (!statusTypes.includes(status)) {
 			res.status(403).send({ errMsg: 'Wrong status' });
 			return;
 		}
 
-		const poll = await Poll.findOneAndUpdate({ _id: id }, {
+		const poll = await Poll.findOneAndUpdate({ _id: id, author: user_id }, {
 			$set: {
 				status: status
 			}
@@ -209,8 +211,9 @@ module.exports = {
 
 	delete: async (req, res) => {
 		const { id } = req.params;
+		const { user_id } = req.session;
 
-		const poll = await Poll.findByIdAndDelete(id);
+		const poll = await Poll.remove({_id: id, author: user_id});
 
 		if (!poll) {
 			res.sendStatus(404);
