@@ -70,7 +70,8 @@ module.exports = {
 	},
 
 	getBaseAnalytic: async (req, res) => {
-		const { authorId, status, limitFilter, offsetFilter } = req.body;
+		const { status, limitFilter, offsetFilter } = req.body;
+		const { user_id } = req.session;
 		let results = [];
 
 		try {
@@ -80,7 +81,7 @@ module.exports = {
 					status: {
 						'$in': status
 					},
-					author: authorId
+					author: user_id
 				},
 				'_id status name'
 			);
@@ -120,7 +121,8 @@ module.exports = {
 	},
 
 	save: async (req, res) => {
-		const { authorId, selectedVariant, pollId, forms } = req.body;
+		const { user_id } = req.session;
+		const { selectedVariant, pollId, forms } = req.body;
 
 		const inputsForm = [];
 		// The answer may be without form
@@ -136,9 +138,9 @@ module.exports = {
 		}
 
 		try {
-			if (authorId && selectedVariant && pollId) {
+			if (user_id && selectedVariant && pollId) {
 				const newResult = await Result({
-					author: authorId,
+					author: user_id,
 					selectedVariant: selectedVariant,
 					poll: pollId,
 					forms: inputsForm
