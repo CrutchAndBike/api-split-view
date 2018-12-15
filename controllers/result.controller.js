@@ -79,7 +79,7 @@ module.exports = {
 		};
 
 		status ? config.status = { '$in': status } : '';
-		poll ? config.poll = pollId : '';
+		pollId ? config.poll = pollId : '';
 
 		try {
 			// TODO add required check 'author'
