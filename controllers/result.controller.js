@@ -121,7 +121,7 @@ module.exports = {
 	},
 
 	save: async (req, res) => {
-        console.log(req.session);
+        console.log(req.body);
         const { user_id } = req.session;
 		const { selectedVariant, pollId, forms } = req.body;
 
