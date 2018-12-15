@@ -80,11 +80,12 @@ module.exports = {
 
 	create: async (req, res) => {
 		const data = req.body;
+		const { user_id } = req.session;
 		data.forms = data.forms || [];
 
 		const inputs = [];
 
-		if (!data.name && !pollTypes.includes(data.pollType)) {
+		if (!data.name || !pollTypes.includes(data.pollType) || !user_id) {
 			res.sendStatus(400);
 			return;
 		}
@@ -118,6 +119,7 @@ module.exports = {
 			name: data.name,
 			type: data.pollType,
 			forms: inputs,
+			author: user_id,
 			variant: {
 				a: {
 					value: url_a,
