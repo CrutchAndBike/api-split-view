@@ -1,7 +1,7 @@
 const Result = require('../models/Result');
 const Poll = require('../models/Poll');
 
-const inputTypes = ['select', 'text'];
+const inputTypes = ['select', 'input', 'checkbox'];
 
 class Input {
 	constructor(data) {
