@@ -1,5 +1,6 @@
 const mongoose = require('../lib/connect'),
 	Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const schema = new Schema({
 	// Дата создания
@@ -10,16 +11,8 @@ const schema = new Schema({
 	},
 	// Автор
 	author: {
-		type: String,
-		/* TODO поменять на уник. идентификатор
-        type: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            }
-        ],
-        */
-		required: true
+		type: ObjectId,
+		ref: 'User'
 	},
 	// Выбранный вариант
 	selectedVariant: {
